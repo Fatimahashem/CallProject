@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerLocal()
-        fetchBalanceUser { result in
+        fetchBalanceProf { result in
             print(result)
             print("resultresultresult")
         }
@@ -222,6 +222,7 @@ class ViewController: UIViewController {
             }
 //            self.setSpeakerStates(enabled: false)
 //            self.updateRemoteAudio(isEnabled: true)
+            appdelegate.providerDelegate?.professionalId = "faxx5bca1F"
             appdelegate.callManager.startCall(handle: "70789466")
         } else if sender.titleLabel?.text == unholdCallText { // This state set when user receives another call
             appdelegate.callManager.setHeld(call: appdelegate.callManager.calls[0], onHold: false)

@@ -19,6 +19,7 @@ final class SpeakerboxCall: NSObject {
     let isOutgoing: Bool
     var handle: String?
     var callSessionId: String?
+    var bombSoundEffect: AVAudioPlayer?
 
     // MARK: Call State Properties
     
@@ -153,16 +154,23 @@ final class SpeakerboxCall: NSObject {
         }
     }
     var canStartCall: ((Bool) -> Void)?
-    func startCall(withAudioSession audioSession: AVAudioSession, completion: ((_ success: Bool) -> Void)?) {
-        print(deviceToken)
-        print("deviceTokendeviceToken")
+    func startCall(withAudioSession audioSession: AVAudioSession,professionalId:String, completion: ((_ success: Bool) -> Void)?) {
         OTAudioDeviceManager.setAudioDevice(OTDefaultAudioDevice.sharedInstance(with: audioSession))
-        self.initiateCall()
+        self.initiateCall(professionalId: professionalId)
+        playOutgoingAudio()
         canStartCall = completion
     }
-    
-    func initiateCall() {
-        print("initiateCallinitiateCall")
+    func playOutgoingAudio() {
+        let path = Bundle.main.path(forResource: "phone_ringing.mp3", ofType:nil)!
+        let url = URL(fileURLWithPath: path)
+        do {
+            bombSoundEffect = try AVAudioPlayer(contentsOf: url)
+            bombSoundEffect?.numberOfLoops = -1
+            bombSoundEffect?.play()
+        } catch {
+        }
+    }
+    func initiateCall(professionalId:String) {
         PFCloud.callFunction(
             inBackground: "getProfessionalStats",
             withParameters: [
@@ -171,40 +179,50 @@ final class SpeakerboxCall: NSObject {
             ]) { result, error in
                 print("resultresult")
                 print(error)
+                print(professionalId)
                 let resultss = result as? Array<[String:Any]>
-                
-                if let foo = resultss?.first(where: {$0["ProfessionalId"] as? String == "faxx5bca1F"}) {
-                    print("foooofff")
-                    let object = PFObject(className: "VideoCallSession")
-                    object["professional_obj"] = foo["Professional"]
-                    object["installationId"] = "r5Ger2kTX"
-                    object["platform"] = "IOS"
-                    object["connectionType"] = "WiFi"
-                    object["carrierName"] = ""
-                    object["voiceOnly"] = true
-                    object.saveInBackground { succeeded, error in
-                        print(succeeded)
-                        print(error)
-                        print(object)
-                        print("succeededsucceeded")
-                        self.callSessionId = object.objectId
-                        self.start(for: object.objectId, complete: { [weak self] (tokSessionId, token) in
-                            print(tokSessionId)
-                            print(token)
-                            print("hghvgc")
+                if error == nil{
+                    if let foo = resultss?.first(where: {$0["ProfessionalId"] as? String == professionalId}) {
+                        print("foooofff")
+                        let object = PFObject(className: "VideoCallSession")
+                        object["professional_obj"] = foo["Professional"]
+                        object["installationId"] = "r5Ger2kTX"
+                        object["platform"] = "IOS"
+                        object["connectionType"] = "WiFi"
+                        object["carrierName"] = ""
+                        object["voiceOnly"] = true
+                        object.saveInBackground { [weak self] succeeded, error in
                             guard let weakSelf = self else { return }
-                            weakSelf.sessionInit(sessionId: tokSessionId, token: token)
-                        })
+                            if let error = error
+                            {
+                                
+                            }else{
+                                if let videoCallSessionId = object.objectId{
+                                    weakSelf.callSessionId = object.objectId
+                                    weakSelf.start(for: object.objectId, complete: { [weak self] (tokSessionId, token) in
+                                        print(tokSessionId)
+                                        print(token)
+                                        print("hghvgc")
+                                        weakSelf.sessionInit(sessionId: tokSessionId, token: token)
+                                    })
+                                }else{
+                                    weakSelf.cloudDisconnect { [weak self] in
+                                        self?.endCall()
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // item could not be found
                     }
-                } else {
-                    // item could not be found
+                }else{
+                    
                 }
                 
             }
     }
     @objc private func fetchCall()
     {
-        print("gjghghghghhg")
         pullRequest?.cancel()
         pullRequest?.getFirstObjectInBackground(block: { [weak self] (object, error) in
             if error == nil
@@ -323,11 +341,13 @@ final class SpeakerboxCall: NSObject {
         publisherInit()
     }
     
-    func endCall() {
-        print("mfffjjfjff")
+    private func cleanup()
+    {
+        print("cleanupcleanup")
+        bombSoundEffect?.stop()
         self.stop()
-        cloudDisconnect {
-            
+        if hasConnected
+        {
             if let publisher = self.publisher {
                 var error: OTError?
                 self.session?.unpublish(publisher, error: &error)
@@ -346,11 +366,31 @@ final class SpeakerboxCall: NSObject {
             }
             self.session = nil
         }
+        else
+        {
+            let params = ["professional_obj":"faxx5bca1F", "videoCallSessionId":callSessionId]
+            let method = UserDefaults.standard.bool(forKey: "isProfessional") ? "timedOutProVideoCall" : "timedOutUserVideoCall"
+            PFCloud.callFunction(inBackground: method, withParameters: params)
+        }
+ 
+    }
+    
+    func endCall() {
+        if hasConnected
+        {
+            cleanup()
+        }
+        else
+        {
+            cloudDisconnect { [weak self] in
+                self?.cleanup()
+            }
+        }
     }
     
     private func cloudDisconnect(finished:@escaping()->Void)
     {
-        var method:String
+        var method:String = ""
         if hasConnected {
             method = UserDefaults.standard.bool(forKey: "isProfessional") ? "endProActiveVideoCall" : "endUserActiveVideoCall"
         }
@@ -358,10 +398,13 @@ final class SpeakerboxCall: NSObject {
         {
             method = UserDefaults.standard.bool(forKey: "isProfessional") ? "rejectProVideoCall" : "cancelUserVideoCall"
         }
+        print(method)
         print("fhhfhfhfhfhf")
         print("vhcgfgchjhkfgfggcg")
         print(callSessionId)
         let params = ["professional_obj":"faxx5bca1F", "videoCallSessionId":callSessionId]
+        print(params)
+        
         PFCloud.callFunction(inBackground: method, withParameters: params) { (result, error) in
             print(error)
             print("errorrrr")
@@ -374,7 +417,7 @@ final class SpeakerboxCall: NSObject {
 extension SpeakerboxCall: OTSessionDelegate {
     func sessionDidConnect(_ session: OTSession) {
         print(#function)
-        
+        bombSoundEffect?.stop()
         hasConnected = true
         canStartCall?(true)
         canAnswerCall?(true)

@@ -18,7 +18,7 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
     let callManager: SpeakerboxCallManager
     private let provider: CXProvider
     var userInfo: [AnyHashable:Any]?
-    
+    var professionalId:String = ""
     init(callManager: SpeakerboxCallManager) {
         self.callManager = callManager
         provider = CXProvider(configuration: type(of: self).providerConfiguration)
@@ -55,6 +55,7 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
         
         // Report the incoming call to the system
         self.userInfo = userInfo
+        print("vjnjvnjnvjrnjrjnj")
         self.handlePushNotification(userInfo: userInfo) { object in
             print("testststsssssss")
             print(presentCall)
@@ -84,6 +85,9 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
     func handlePushNotification(userInfo:[AnyHashable:Any]?, completion: ((PFObject?) -> Void)?) {
         let videoCallRelatedPush = userInfo?["videoCallRelated"] as? Bool
         let configRelatedPush = userInfo?["configChange"] as? Bool
+        print("nkjnvkrnnkvjrnknkn")
+        print(userInfo?["callCancelled"] as? Bool)
+        print(userInfo?["callCancelled"] as? Int)
         if configRelatedPush ?? false {
             let MMPC = userInfo?["MMPC"]
             let FMPC = userInfo?["FMPC"]
@@ -114,28 +118,26 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
                 }
             })
             
-            print(TAProfCallObj.sharedInstance()?.videoSessionIdInProgress)
+            print(UserDefaults.standard.string(forKey: "videoCallSessionId"))
             print("tetststststsss")
             print(videoCallSessionId)
             if(callRejected)
             {
+                for call in callManager.calls {
+                    callManager.end(call: call)
+                }
             }
             else if(callTimedOut)
             {
-            }
-            else if(callCancelled && TAProfCallObj.sharedInstance()?.videoSessionIdInProgress == videoCallSessionId)
-            {
-                print("tetststss")
-                if outgoingCall?.isOnHold ?? false || answerCall?.isOnHold ?? false {
-                    print("Call is on hold. Do not terminate any call")
-                    return
+                for call in callManager.calls {
+                    callManager.end(call: call)
                 }
-                
-                outgoingCall?.endCall()
-                outgoingCall = nil
-                answerCall?.endCall()
-                answerCall = nil
-                callManager.removeAllCalls()
+            }
+            else if(callCancelled && UserDefaults.standard.string(forKey: "videoCallSessionId") == videoCallSessionId)
+            {
+                for call in callManager.calls {
+                    callManager.end(call: call)
+                }
             }
             else if (callStarted)
             {
@@ -151,7 +153,7 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
                     }else{
                         print("videoCallSessionId")
                         print(videoCallSessionId)
-                        TAProfCallObj.sharedInstance()?.videoSessionIdInProgress = videoCallSessionId
+                        UserDefaults.standard.set(videoCallSessionId, forKey: "videoCallSessionId")
                     let query = PFQuery(className: "VideoCallSession")
                     query.whereKey("objectId", equalTo: videoCallSessionId)
                     query.getFirstObjectInBackground() { object, error in
@@ -341,11 +343,8 @@ final class ProviderDelegate: NSObject, CXProviderDelegate {
             sendFakeAudioInterruptionNotificationToStartAudioResources()
             return
         }
-        print(answerCall)
-        print(outgoingCall)
-        print("outgoingCalloutgoingCall")
         // Start call audio media, now that the audio session has been activated after having its priority boosted.
-        outgoingCall?.startCall(withAudioSession: audioSession) { [weak self] success in
+        outgoingCall?.startCall(withAudioSession: audioSession,professionalId:professionalId) { [weak self] success in
             guard let outgoingCall = self?.outgoingCall else { return }
             print(success)
             if success {

@@ -17,23 +17,23 @@ extension UIApplication {
         }
     }
     func showCallController() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            // If there is termination: Failed to load VoiceCallViewController from Main.storyboard. Please check its storyboard ID")
-            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
-            let viewController = storyboard.instantiateViewController(withIdentifier: "VoiceCallViewController")
-            
-            if var dataSource = viewController as? DirectCallDataSource {
-                dataSource.isDialing = false
-            }
-            
-            if let topViewController = UIViewController.topViewController {
-                topViewController.present(viewController, animated: true, completion: nil)
-            } else {
-                self.keyWindow?.rootViewController = viewController
-                self.keyWindow?.makeKeyAndVisible()
-            }
-        }
+//        DispatchQueue.main.async { [weak self] in
+//            guard let self = self else { return }
+//            // If there is termination: Failed to load VoiceCallViewController from Main.storyboard. Please check its storyboard ID")
+//            let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+//            let viewController = storyboard.instantiateViewController(withIdentifier: "VoiceCallViewController")
+//            
+//            if var dataSource = viewController as? DirectCallDataSource {
+//                dataSource.isDialing = false
+//            }
+//            
+//            if let topViewController = UIViewController.topViewController {
+//                topViewController.present(viewController, animated: true, completion: nil)
+//            } else {
+//                self.keyWindow?.rootViewController = viewController
+//                self.keyWindow?.makeKeyAndVisible()
+//            }
+//        }
     }
     func showError(with errorDescription: String?) {
         let message = errorDescription ?? "Something went wrong. Please retry."

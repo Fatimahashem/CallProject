@@ -69,14 +69,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
         print("Notification willPresent: \(userInfo)")
-
-        if let type = userInfo["userName"] as? String{
-            self.displayIncomingCall(userInfo:userInfo,uuid: UUID(), handle: type, hasVideo: true) { _ in
+            self.displayIncomingCall(userInfo:userInfo,uuid: UUID(), handle: userInfo["userName"] as? String ?? "", hasVideo: true) { _ in
                 let backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
                 UIApplication.shared.endBackgroundTask(backgroundTaskIdentifier)
                 print("nffjjfjfjfjjfjfjf")
             }
-        }
         completionHandler([.sound, .badge])
     }
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

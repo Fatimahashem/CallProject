@@ -17,13 +17,10 @@
 		8486E2B12934D50E006FAAD8 /* welcomeVoice_user_ar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8486E2AA2934D50E006FAAD8 /* welcomeVoice_user_ar.mp3 */; };
 		8486E2B22934D50E006FAAD8 /* phone_busy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8486E2AB2934D50E006FAAD8 /* phone_busy.mp3 */; };
 		8486E2B32934D50E006FAAD8 /* welcomeVoice_pro_ar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8486E2AC2934D50E006FAAD8 /* welcomeVoice_pro_ar.mp3 */; };
-		8486E2B52936B000006FAAD8 /* VoiceCallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486E2B42936B000006FAAD8 /* VoiceCallViewController.swift */; };
-		8486E2B72936B06A006FAAD8 /* DirectCallDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486E2B62936B06A006FAAD8 /* DirectCallDataSource.swift */; };
 		8486E2B92936B2D7006FAAD8 /* CallStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486E2B82936B2D7006FAAD8 /* CallStatus.swift */; };
 		8486E2BB2936B316006FAAD8 /* UIImage+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486E2BA2936B315006FAAD8 /* UIImage+QuickStart.swift */; };
 		8486E2BD2936B540006FAAD8 /* UIApplication+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486E2BC2936B540006FAAD8 /* UIApplication+QuickStart.swift */; };
 		8486E2BF2936B58E006FAAD8 /* UIViewController+QuickStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8486E2BE2936B58E006FAAD8 /* UIViewController+QuickStart.swift */; };
-		84FDAD622949A677007585C6 /* AVTokSound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84FDAD612949A677007585C6 /* AVTokSound.swift */; };
 		A00A84251F3A772400B2862E /* OTDefaultAudioDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = A00A84221F3A772400B2862E /* OTDefaultAudioDevice.m */; };
 		A04D825E1EEB1E3E00EBA4CA /* SpeakerboxCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04D825C1EEB1E3E00EBA4CA /* SpeakerboxCall.swift */; };
 		A04D825F1EEB1E3E00EBA4CA /* SpeakerboxCallManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04D825D1EEB1E3E00EBA4CA /* SpeakerboxCallManager.swift */; };
@@ -50,13 +47,10 @@
 		8486E2AA2934D50E006FAAD8 /* welcomeVoice_user_ar.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = welcomeVoice_user_ar.mp3; sourceTree = "<group>"; };
 		8486E2AB2934D50E006FAAD8 /* phone_busy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = phone_busy.mp3; sourceTree = "<group>"; };
 		8486E2AC2934D50E006FAAD8 /* welcomeVoice_pro_ar.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = welcomeVoice_pro_ar.mp3; sourceTree = "<group>"; };
-		8486E2B42936B000006FAAD8 /* VoiceCallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceCallViewController.swift; sourceTree = "<group>"; };
-		8486E2B62936B06A006FAAD8 /* DirectCallDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCallDataSource.swift; sourceTree = "<group>"; };
 		8486E2B82936B2D7006FAAD8 /* CallStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallStatus.swift; sourceTree = "<group>"; };
 		8486E2BA2936B315006FAAD8 /* UIImage+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+QuickStart.swift"; sourceTree = "<group>"; };
 		8486E2BC2936B540006FAAD8 /* UIApplication+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+QuickStart.swift"; sourceTree = "<group>"; };
 		8486E2BE2936B58E006FAAD8 /* UIViewController+QuickStart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+QuickStart.swift"; sourceTree = "<group>"; };
-		84FDAD612949A677007585C6 /* AVTokSound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVTokSound.swift; sourceTree = "<group>"; };
 		A00A84201F3A772400B2862E /* CallKitDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CallKitDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		A00A84211F3A772400B2862E /* OTDefaultAudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OTDefaultAudioDevice.h; sourceTree = "<group>"; };
 		A00A84221F3A772400B2862E /* OTDefaultAudioDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OTDefaultAudioDevice.m; sourceTree = "<group>"; };
@@ -155,13 +149,10 @@
 				A062C62C1EE5FAA200FD64A3 /* LaunchScreen.storyboard */,
 				A062C62F1EE5FAA200FD64A3 /* Info.plist */,
 				A00A84201F3A772400B2862E /* CallKitDemo-Bridging-Header.h */,
-				8486E2B42936B000006FAAD8 /* VoiceCallViewController.swift */,
-				8486E2B62936B06A006FAAD8 /* DirectCallDataSource.swift */,
 				8486E2B82936B2D7006FAAD8 /* CallStatus.swift */,
 				8486E2BA2936B315006FAAD8 /* UIImage+QuickStart.swift */,
 				8486E2BC2936B540006FAAD8 /* UIApplication+QuickStart.swift */,
 				8486E2BE2936B58E006FAAD8 /* UIViewController+QuickStart.swift */,
-				84FDAD612949A677007585C6 /* AVTokSound.swift */,
 				841477852958346D00B32EC8 /* TAProfCallObj.swift */,
 				841477872958371D00B32EC8 /* UserSpecification.swift */,
 			);
@@ -311,7 +302,6 @@
 				8486E2BF2936B58E006FAAD8 /* UIViewController+QuickStart.swift in Sources */,
 				A062C6261EE5FAA200FD64A3 /* ViewController.swift in Sources */,
 				8486E2BD2936B540006FAAD8 /* UIApplication+QuickStart.swift in Sources */,
-				84FDAD622949A677007585C6 /* AVTokSound.swift in Sources */,
 				A04D825F1EEB1E3E00EBA4CA /* SpeakerboxCallManager.swift in Sources */,
 				A062C6241EE5FAA200FD64A3 /* AppDelegate.swift in Sources */,
 				841477862958346D00B32EC8 /* TAProfCallObj.swift in Sources */,
@@ -319,9 +309,7 @@
 				A00A84251F3A772400B2862E /* OTDefaultAudioDevice.m in Sources */,
 				A04D825E1EEB1E3E00EBA4CA /* SpeakerboxCall.swift in Sources */,
 				841477882958371D00B32EC8 /* UserSpecification.swift in Sources */,
-				8486E2B52936B000006FAAD8 /* VoiceCallViewController.swift in Sources */,
 				A04D82611EEB1EB000EBA4CA /* ProviderDelegate.swift in Sources */,
-				8486E2B72936B06A006FAAD8 /* DirectCallDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
